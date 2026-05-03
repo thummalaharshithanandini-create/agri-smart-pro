@@ -31,7 +31,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname_root, '../client/dist')));
 
   // Handle any requests that don't match the ones above by returning index.html
-  app.get('*', (req, res) => {
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
     res.sendFile(path.join(__dirname_root, '../client/dist', 'index.html'));
   });
 } else {
